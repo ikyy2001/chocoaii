@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Neo Brutal AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('admin_panel') }}" class="logo">ADMIN PANEL</a>
+        <nav>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+    </header>
+    <main class="main-container">
+        <div class="admin-nav">
+            <a href="{{ url_for('admin_panel') }}" class="neo-button">Dashboard</a>
+            <a href="{{ url_for('admin_users') }}" class="neo-button">Manajemen Pengguna</a>
+        </div>
+
+        <h1>Dashboard</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <section style="margin-bottom: 3rem;">
+            <h2>Statistik</h2>
+            <div class="admin-grid">
+                <div class="neo-card stat-card">
+                    <h3>Total Pengguna</h3>
+                    <p class="number">{{ total_users }}</p>
+                </div>
+                <div class="neo-card stat-card">
+                    <h3>Total Percakapan</h3>
+                    <p class="number">{{ total_chats }}</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Statistik Reaksi Emoji</h2>
+            <div class="neo-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID Reaksi</th>
+                            <th>ID Chat</th>
+                            <th>User</th>
+                            <th>Reaksi</th>
+                            <th>Teks Jawaban</th>
+                            <th>Waktu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reaction in emoji_reactions %}
+                        <tr>
+                            <td>{{ reaction.id }}</td>
+                            <td>{{ reaction.chat_id }}</td>
+                            <td>{{ reaction.user_id }}</td>
+                            <td>{{ reaction.reaction }}</td>
+                            <td style="white-space: pre-wrap; word-break: break-word;">{{ reaction.response_text }}</td>
+                            <td>{{ reaction.timestamp }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+
+        <section style="margin-bottom: 3rem;">
+            <h2>Custom Q&A (Choco AI)</h2>
+            <div class="neo-card">
+                <form action="{{ url_for('add_qna') }}" method="POST">
+                    <div class="form-group">
+                        <label for="question">Pertanyaan (keyword)</label>
+                        <input type="text" name="question" class="neo-input" placeholder="cth: siapa kamu">
+                    </div>
+                    <div class="form-group">
+                        <label for="answer">Jawaban Custom</label>
+                        <textarea name="answer" class="neo-input" rows="3" placeholder="Jawaban yang akan ditampilkan"></textarea>
+                    </div>
+                    <button type="submit" class="neo-button">Tambah Q&A</button>
+                </form>
+                <br>
+                <h3>Daftar Q&A</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Pertanyaan</th>
+                            <th>Jawaban</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for qna in qnas %}
+                        <tr>
+                            <td>{{ qna.question }}</td>
+                            <td>{{ qna.answer }}</td>
+                            <td>
+                                <form action="{{ url_for('delete_qna', qna_id=qna.id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus Q&A ini?');">
+                                    <button type="submit" class="neo-button" style="background-color: #f8d7da;">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section style="margin-bottom: 3rem;">
+            <h2>Manajemen Pengguna</h2>
+             <div class="neo-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Status Admin</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{% if user.is_admin %}✅ Admin{% else %}❌ User Biasa{% endif %}</td>
+                            <td>
+                                {% if user.id != current_user.id %}
+                                    {% if user.is_admin %}
+                                        <form action="{{ url_for('revoke_admin', user_id=user.id) }}" method="POST" style="display: inline;">
+                                            <button type="submit" class="neo-button" style="background-color: #f8d7da;" onclick="return confirm('Yakin ingin mencabut status admin dari {{ user.username }}?')">Cabut Admin</button>
+                                        </form>
+                                    {% else %}
+                                        <form action="{{ url_for('grant_admin', user_id=user.id) }}" method="POST" style="display: inline;">
+                                            <button type="submit" class="neo-button" style="background-color: #d4edda;">Jadikan Admin</button>
+                                        </form>
+                                    {% endif %}
+                                {% else %}
+                                    (Anda)
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

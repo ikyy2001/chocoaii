@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit - Choco AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <a href="/" class="logo">Choco-AI</a>
+        <nav>
+            <a href="{{ url_for('chat_page') }}">Kembali ke Chat</a>
+        </nav>
+    </header>
+    <main class="main-container">
+        <div class="neo-card">
+            <h1>CREDITS</h1>
+            <div class="credit-content"> <p>Website ini dibuat sebagai portfolio dan eksperimen desain antarmuka AI.</p>
+                
+                <h2>Developer</h2>
+                <p>Dibuat oleh Muhammad Rizki Pratama</p>
+    
+                <h2>Teknologi yang Digunakan</h2>
+                <ul>
+                    <li><strong>Backend:</strong> Python (Flask)</li>
+                    <li><strong>Frontend:</strong> HTML, CSS, JavaScript</li>
+                    <li><strong>Database:</strong> SQLite (Development), PostgreSQL-ready</li>
+                    <li><strong>Desain:</strong> Neo-Brutalism</li>
+                </ul>
+                
+                <h2>API yang Digunakan</h2>
+                <ul>
+                    <li><strong>Google Gemini API:</strong> Untuk model AI Gemini.</li>
+                    <li><strong>OpenAI API:</strong> Untuk model AI ChatGPT.</li>
+                </ul>
+            </div> </div>
+    </main>
+</body>
+</html>

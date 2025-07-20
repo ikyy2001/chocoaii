@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Neo Brutal AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <main class="main-container">
+        <div class="form-container">
+            <div class="neo-card">
+                <h1 style="text-align: center;">REGISTER</h1>
+                 {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    <ul class="flash-messages">
+                        {% for category, message in messages %}
+                        <li class="flash {{ category }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                {% endwith %}
+                <form method="POST" action="{{ url_for('register') }}">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" class="neo-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" class="neo-input" required>
+                    </div>
+                    <button type="submit" class="neo-button" style="width: 100%;">Register</button>
+                </form>
+                <p style="text-align: center; margin-top: 1rem;">Sudah punya akun? <a href="{{ url_for('login') }}">Login di sini</a></p>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

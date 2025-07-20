@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - Choco AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body class="chat-page">
+    <header>
+        <a href="/" class="logo">Choco AI</a>
+        <nav>
+            <span>Halo, {{ current_user.username }}!</span>
+            <a href="{{ url_for('credit') }}">Credit</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+    </header>
+
+    <main class="main-container chat-layout">
+        <aside class="sidebar">
+            <button id="new-chat-btn" class="neo-button" style="width: 100%; margin-bottom: 1rem;">+ Chat Baru</button>
+            <h2>History</h2>
+            <ul class="history-list">
+                {% for chat in history %}
+                    <li class="history-item" data-chat-id="{{ chat.id }}">
+                        <span class="history-title">{{ chat.title }}</span>
+                        <div class="history-actions">
+                            <span class="fav-icon">{% if chat.is_favorite %}★{% else %}☆{% endif %}</span>
+                            <span class="delete-icon" title="Hapus Histori">❌</span>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </aside>
+
+        <section class="chat-main">
+            <div class="chat-controls" style="margin-bottom: 1rem; display: flex; gap: 1rem;">
+                <select id="model-selector" class="neo-input">
+                    <option value="choco" selected>Choco AI</option> <option value="gemini">Gemini</option>
+                    <option value="chatgpt">ChatGPT</option>
+                </select>
+                <select id="model-version" class="neo-input">
+                    </select>
+            </div>
+            <div id="chat-window" class="chat-window">
+                <div class="message assistant">
+                    <div class="sender">ASSISTANT</div>
+                    <div class="message-content">Pilih histori di samping atau mulai percakapan baru.</div>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <textarea id="message-input" class="neo-input" placeholder="Ketik pesan Anda di sini..." rows="2"></textarea>
+                <button id="send-button" class="neo-button">Kirim</button>
+            </div>
+            <button id="donate-button" class="neo-button donate-btn">💰 Donasi</button>
+            <div class="typing-toggle-container" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                <label for="typing-toggle">Animasi Ketik:</label>
+                <input type="checkbox" id="typing-toggle" checked>
+            </div>
+        </section>
+    </main>
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

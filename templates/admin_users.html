@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Pengguna - Admin Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <a href="/admin" class="logo">ADMIN PANEL</a>
+        <nav><a href="{{ url_for('index') }}">Home</a> <a href="{{ url_for('logout') }}">Logout</a></nav>
+    </header>
+    <main class="main-container">
+        <div class="admin-nav">
+            <a href="{{ url_for('admin_panel') }}" class="neo-button">Dashboard</a>
+            <a href="{{ url_for('admin_users') }}" class="neo-button">Manajemen Pengguna</a>
+        </div>
+        <h1>Manajemen Pengguna</h1>
+        <div class="neo-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Level</th>
+                        <th>Status Admin</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>
+                            <form action="{{ url_for('edit_user_level', user_id=user.id) }}" method="POST" class="level-form">
+                                <select name="level" class="neo-input" onchange="this.form.submit()">
+                                    <option value="Bronze" {% if user.level == 'Bronze' %}selected{% endif %}>Bronze</option>
+                                    <option value="Silver" {% if user.level == 'Silver' %}selected{% endif %}>Silver</option>
+                                    <option value="Platinum" {% if user.level == 'Platinum' %}selected{% endif %}>Platinum</option>
+                                    <option value="Royal" {% if user.level == 'Royal' %}selected{% endif %}>Royal</option>
+                                </select>
+                            </form>
+                        </td>
+                        <td>{% if user.is_admin %}✅ Admin{% else %}❌ User{% endif %}</td>
+                        <td>
+                            {% if user.id != current_user.id %}
+                                {% if user.is_admin %}
+                                    <form action="{{ url_for('revoke_admin', user_id=user.id) }}" method="POST" class="action-form">
+                                        <button type="submit" class="neo-button danger" onclick="return confirm('Cabut status admin dari {{ user.username }}?')">Cabut Admin</button>
+                                    </form>
+                                {% else %}
+                                    <form action="{{ url_for('grant_admin', user_id=user.id) }}" method="POST" class="action-form">
+                                        <button type="submit" class="neo-button success">Jadikan Admin</button>
+                                    </form>
+                                {% endif %}
+                            {% else %}
+                                (Anda)
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Datang - Choco AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <a href="/" class="logo">Choco AI</a>
+        <nav>
+            {% if current_user.is_authenticated %}
+                <span>Halo, {{ current_user.username }}!</span>
+                {% if current_user.is_admin %}
+                    <a href="{{ url_for('admin_panel') }}">Admin</a>
+                {% endif %}
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                {% endif %}
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <div class="form-container" style="text-align: center;">
+            <div class="neo-card">
+                <h1>Choco AI</h1>
+                <p style="font-weight: 600; margin-bottom: 2rem;">Sebuah eksperimen antarmuka AI dengan gaya desain yang tegas dan fungsional.</p>
+                
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('chat_page') }}" class="neo-button">Mulai Chat</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="neo-button" style="margin-right: 1rem;">Login</a>
+                    <a href="{{ url_for('register') }}" class="neo-button">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+</body>
+</html>

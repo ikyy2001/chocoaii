@@ -1,14 +1,11 @@
 {
-    "builds": [
-      {
-        "src": "backend.py",
-        "use": "@vercel/python"
+  "builds": [
+    {
+      "src": "nama_file_app_utama_anda.py",
+      "use": "@vercel/python",
+      "config": {
+        "installCommand": "bash build.sh"
       }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "backend.py"
-      }
-    ]
-  }
+    }
+  ]
+}

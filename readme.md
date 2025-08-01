@@ -52,8 +52,8 @@ Berikut adalah langkah-langkah untuk menjalankan proyek ini di komputer lokal An
 ### 2. Clone Repositori
 Buka terminal dan jalankan perintah berikut:
 ```bash
-git clone <URL_REPOSITORI_ANDA>
-cd <NAMA_FOLDER_PROYEK>
+git clone [<URL_REPOSITORI_ANDA>](https://github.com/ikyy2001/chocoaii.git)
+cd chocoaii
 ```
 
 ### 3. Siapkan Virtual Environment
